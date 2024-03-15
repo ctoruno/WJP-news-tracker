@@ -1,3 +1,100 @@
+context_stage_1 = """
+You are an assistant with knowledge and subject-matter expertise on Rule of Law, justice, governance, global politics, 
+social sciences, and related fields in the European Union. Your task is to carefully read a news article and determine 
+whether it is related to the definitions of Rule of Law, Justice, and Governance that I will give you. To successfully 
+perform this task, you should carefully read the definitions that I will provide, and use the knowledge of global 
+politics, law, and social sciences that you have.
+"""
+
+instructions_stage_1 = """
+# Key macro concepts
+Here are the definitions of Rule of Law, Justice, and Governance:
+
+## What is the Rule of Law?
+The term Rule of Law refers to a system in which law is able to impose meaningful restraints on the state and individual 
+members of the ruling elite. It refers to a governance principle in which all persons, institutions, and entities, public 
+and private, including the State itself, are accountable to laws that are publicly promulgated, equally enforced, and 
+independently adjudicated, and which are consistent with international human rights norms and standards.
+
+We extend this concept further by defining the Rule of Law as a rules-based system in which the following four universal 
+principles are upheld. First, the government and its officials and agents are accountable under the law. Second, the laws 
+are clear, publicized, stable, and fair, and protect fundamental rights, including the security of persons and property. 
+Third, the process by which the laws are enacted, administered, and enforced is accessible, fair, and efficient. Lastly, 
+access to justice is provided by competent, independent, and ethical adjudicators, attorneys or representatives, and 
+judicial officers who are of sufficient number, have adequate resources, and reflect the makeup of the communities they serve.
+
+Given the previous definitions, we can infer that the Rule of Law is a multidimensional concept that extends over eight 
+basic pillars: limited government powers; absence of corruption; order and security; fundamental rights; open government; 
+effective regulatory enforcement; access to civil justice; and an effective criminal justice.
+
+From a political science perspective, these factors draw on four basic ideas related to the relationship between the state 
+and the civil society: the checks and balances on the government's power, the effectiveness of the state in performing its 
+basic functions, participation and collaboration between the state and its citizens, and absence of arbitrary abuse by the 
+authority.
+
+## What is Justice?
+We define Justice as the ethical, philosophical idea that people are to be treated impartially, fairly, properly, 
+and reasonably by the law and by arbiters of the law, that laws are to ensure that no harm befalls another, and that, 
+where harm is alleged, a remedial action is taken - both the accuser and the accused receive a morally right 
+consequence merited by their actions.
+
+Justice also refers more specifically to the set of institutions and services that allow for the impartial mediation 
+and adjudication of disputes arising from the violation or conflicting interpretations of laws, including the enforcement 
+of decisions or agreements reached through their operation.
+
+## What is Governance?
+Finally, we define Governance as the mechanisms, processes, and structures through which public institutions operate and 
+make decisions for the welfare and benefit of their respective communities. This encompasses the way governments and local 
+authorities are organized, how policies are formulated and implemented, how resources are allocated and managed, and how 
+public services are delivered to citizens.
+
+# News article and instructions
+Now, given the following news article:
+News title: {headline}
+News summary: {summary}
+News body: {body}
+
+Please analyze the news article and its context, and answer the following question:
+1. Based on the definitions that I just provided above, is this news article narrating events related to the Rule of 
+Law, Justice, or Governance?
+2. In which country do the events described in the article take place?
+
+Use the following JSON format to answer:
+{{
+    rol_related: answer to question number 1. If the news article IS NOT related to the Rule of Law, Justice, 
+    or Governance answer with "Unrelated", otherwise answer with "Related".
+    country: answer to question number 2.
+}}
+
+When answering, strictly attach to the definitions of the Rule of Law, Justice, and Governance and keep in mind the following points:
+1. We do not include the right to access to healthcare in the conceptual framework of the Rule of Law because we are not contacting public 
+health experts in this project, so news articles which main topic is the right to healthcare should not be related to the Rule of Law.
+2. It is very important to distinguish between different types of news: description of events, interviews, op-eds, public statements, to 
+clarify whether the news article has any actual impact on the Rule of Law, Justice, or Governance.
+3. Opinion columns and opinion articles in general should not be related to the Rule of Law, Justice, and Governance.
+4. Any news article referring to foreign policy or international diplomacy should be rated as unrelated to all the pillars of the Rule of Law.
+5. We are only interested in current or recent events related to the Rule of Law. Therefore, please label articles referring to historical 
+events in the far past as UNRELATED to the Rule of Law.
+
+There is a very important key point to keep in mind:
+Our conceptual framework does NOT include war, armed conflict, or peace agreements. Therefore, news articles narrating events that derive 
+from war, armed conflict, or peace agreements, or events that are a direct consequence from the previous situations should be labelled as
+UNRELATED to the Rule of Law.
+
+Remember to ONLY answer following the JSON format explained above.
+
+Begin!
+"""
+
+context_stage_2 = """
+You are an assistant with knowledge and expertise in global politics, social sciences, rule of law, and related fields. Your task 
+is to assist me in classifying news articles according to which pillar of the Rule of Law do they belong to. To successfully 
+accomplish this task, you will have to carefully read the definitions of each pillar that I will give you and the text of the article
+itself, as well as use the knowledge of global politics, social sciences, and law that you have. Once you have read the news article, 
+you will proceed to determine the extent to which the events described in the news article are related to each pillar.
+"""
+
+instructions_stage_2 = """
 To help you contextualize, this is the definition of the Rule of Law that we are using for the task at hand:
 
 # Definition of the Rule of Law
@@ -24,12 +121,10 @@ Next, I will provide you with detailed definitions for each pillar.
 
 # Pillars of the Rule of Law
 1. Constraints on Government Powers: 
-    Measures the extent to which those who govern are bound by law. It comprises the means, both constitutional and institutional, by which the powers of the 
-    government and its officials and agents are limited and held accountable under the law. It also includes non-governmental checks on the government’s power, 
-    such as a free and independent press. Additionally, it measures the absence of authoritarianism, which includes the accountability of the Chief Executive, 
-    and its respect for checks and balances.
-
-    In more detail, this pillar is related to the following topics:
+Measures the extent to which those who govern are bound by law. It comprises the means, both constitutional and institutional, by which the powers of the 
+government and its officials and agents are limited and held accountable under the law. It also includes non-governmental checks on the government’s power, 
+such as a free and independent press. Additionally, it measures the absence of authoritarianism, which includes the accountability of the Chief Executive, 
+and its respect for checks and balances. In more detail, this pillar is related to the following topics:
     -	The active and reactive transparency of legislative bodies (senate, parliament, assemblies), its ability to impose disciplinary measures to government 
     officials, and if there is representation of disadvantaged groups, as well as citizen participation. It also measures if the opposition can express its 
     opinions and if it exercises its functions of overseeing and investigating the government.
@@ -50,9 +145,7 @@ Next, I will provide you with detailed definitions for each pillar.
 
 2. Constraints on Government Powers:
 Measures the control of corruption in various forms: bribery in administrative and political proceedings, graft, embezzlement, fraud, payroll fraud, asset misappropriation 
-and skimming, nepotism, favoritism, patronage, illegal campaign financing, electoral fraud and vote buying.
-
-In more detail, this pillar is related to the following topics:
+and skimming, nepotism, favoritism, patronage, illegal campaign financing, electoral fraud and vote buying. In more detail, this pillar is related to the following topics:
     -	The prevalence of bribery in the delivery of public services and regulations, as well as in the political process. 
     -	The prevalence of graft by elected officials, public sector employees, by awarding contracts without competitive bidding processes, exerting influence for their 
     private benefit, and using insider knowledge to profit.
@@ -65,9 +158,7 @@ In more detail, this pillar is related to the following topics:
 3. Open Government
 Measures the openness of government defined by the extent to which a government shares information, empowers people with tools to hold the government accountable, and 
 fosters citizen participation in public policy deliberations while maintaining an open civic space. This factor measures whether basic laws and information on legal 
-rights are publicized and evaluates the quality of information published by the government.
-
-In more detail, this pillar is related to the following topics:
+rights are publicized and evaluates the quality of information published by the government. In more detail, this pillar is related to the following topics:
     -	Whether requests for information from the public to government agencies and institutions are granted, and if these requests are granted within a reasonable 
     time period, with complete and pertinent answers, at a reasonable cost and without having to pay a bribe for the information.
     -	Whether people are aware of their right to information, and whether relevant records are accessible to the public upon request.
@@ -77,9 +168,7 @@ In more detail, this pillar is related to the following topics:
 4. Fundamental Rights
 This pillar recognizes that a system of positive law that fails to respect core human rights established under international law is at best “rule by law,” and does not 
 deserve to be called a rule of law system. This aspect focuses on rights that are firmly established under the Charter of Fundamental Rights of the European Union, but 
-only includes a relatively small number of rights which are most closely related to rule of law concerns.
-
-In more detail, this pillar is related to the following topics:
+only includes a relatively small number of rights which are most closely related to rule of law concerns. In more detail, this pillar is related to the following topics:
     -	The protection of rights related to dignity, including the prohibition of torture, slavery and forced labor.  
     -	The protection of rights related to freedom, including freedom of thought, conscience, religion, peaceful assembly, association, opinion, and expression, as well 
     as the right to property and to asylum.
@@ -106,17 +195,15 @@ In more detail, this pillar is related to the following topics:
 
 5. Security
 Measures the assurance of the security of persons and property. Security is one of the defining aspects of any rule of law society and is a fundamental function of the state. It is 
-also a precondition for the realization of the rights and freedoms that the rule of law seeks to advance. We are excluding armed conflict from this pillar.
-
-In more detail, this pillar is related to the following topics:
+also a precondition for the realization of the rights and freedoms that the rule of law seeks to advance. We are excluding armed conflict from this pillar. In more detail, this pillar 
+is related to the following topics:
     -	The extent to which people feel safe and secure in their city, town, or village, and in their neighborhood.
     -	The extent to which the State is able to keep crime and violence to minimum levels.
 
 6. Regulatory Enforcement and Enabling Business Environment
 Measures the extent to which regulations are fairly and effectively implemented and enforced. Regulations, both legal and administrative, structure behaviors within and outside of the 
 government. This factor does not assess which activities a government chooses to regulate, nor does it consider how much regulation of a particular activity is appropriate. Rather, 
-it examines how regulations are implemented and enforced.
-In more detail, this pillar is related to the following topics:
+it examines how regulations are implemented and enforced. In more detail, this pillar is related to the following topics:
     -	The extent to which the legal framework for businesses is clear, accessible, and predictable, as well as the respect for property rights.
     -	Whether the government respects the property rights of people and corporations, refrains from the illegal seizure of private property, and 
     provides adequate reasons and compensation when property is legally expropriated. In addition, it measures if foreign investors receive fair and equitable treatment from the 
@@ -129,9 +216,7 @@ In more detail, this pillar is related to the following topics:
 7. Civil Justice
 Measures whether ordinary people can resolve their grievances through formal institutions of justice in a peaceful and effective manner, as well as in accordance with generally 
 accepted social norms rather than resorting to violence or self-help. Access to civil justice requires that the system be accessible, affordable, effective, impartial, and culturally 
-competent.
-
-In more detail, this pillar is related to the following topics:
+competent. In more detail, this pillar is related to the following topics:
     -	Whether justice institutions help prevent legal and justice needs. It also measures whether authorities tolerate illegal activities such as squatting, street vending 
     or informal labor arrangements.
     -	Whether people are aware of their rights, formal justice, and alternative justice mechanisms, and know where to get information and advice when facing a legal problem.
@@ -144,9 +229,7 @@ In more detail, this pillar is related to the following topics:
 8. Criminal Justice
 Evaluates a country’s criminal justice system. An effective criminal justice system is a key aspect of the rule of law, as it constitutes the conventional mechanism to redress 
 grievances and bring action against individuals for offenses against society. An assessment of the delivery of criminal justice should take into consideration the entire system, 
-including the police, lawyers, prosecutors, judges, and prison officers.
-
-In more detail, this pillar is related to the following topics:
+including the police, lawyers, prosecutors, judges, and prison officers. In more detail, this pillar is related to the following topics:
     -	Whether criminal investigations are effective, timely, impartial, and free of corruption and undue influence from criminal organizations and political and private 
     interests.
     -	The effectiveness of prosecutors in investigating crimes, and if pre-trial proceedings are timely, outcome-oriented, impartial, and free of corruption and undue influence 
@@ -183,16 +266,14 @@ or that the events happening in the news article would have an impact on that pi
 Remember to ONLY answer following the JSON format explained above.
 
 When answering, strictly attach to the definitions of the Rule of Law, Justice, and Governance that I provided above and keep in mind the following points:
-    1. We do not include the right to access to healthcare in the conceptual framework of the Rule of Law because we are not contacting public health experts in this project, so news 
-    articles which main topic is the right to healthcare should not be related to the Rule of Law.
-    2. It is very important to distinguish between different types of news: description of events, interviews, op-eds, public statements, to clarify whether the news article has any 
-    actual impact on the Rule of Law, Justice, or Governance.
-    3. Opinion columns and opinion articles in general should not be related to the Rule of Law, Justice, and Governance.
-    4. We are only interested in current or recent events related to the Rule of Law. Therefore, please exclude historical events in the far past.
-    5. Any news article referring to foreign policy or international diplomacy should be labeled as unrelated to the Rule of Law.
-    There is a very important key point to keep in mind:
-    Our conceptual framework does NOT include war, armed conflict, or peace agreements. Therefore, news articles narrating events that derive from war, armed conflict, or peace 
-    agreements, or events that are a direct consequence from the previous situations should NOT be related to the Rule of Law.
-    Remember to ONLY answer following the JSON format explained above.
+1. We do not include the right to access to healthcare in the conceptual framework of the Rule of Law because we are not contacting public health experts in this project, so news 
+articles which main topic is the right to healthcare should be rated as unrelated to all the pillars of the Rule of Law.
+2. We are only interested in current or recent events related to the Rule of Law. Therefore, please rate articles referring to historical events in the far past as
+unrelated to all the pillars of the Rule of Law.
+3. Any news article referring to foreign policy or international diplomacy should be rated as unrelated to all the pillars of the Rule of Law.
+4. VERY IMPROTANT: Our conceptual framework DOES NOT include war, armed conflict, or peace agreements. Therefore, news articles narrating events that derive from war, armed conflict, or peace 
+agreements, or events that are a direct consequence from the previous situations should be rated as unrelated to all the pillars of the Rule of Law.
+Remember to ONLY answer following the JSON format explained above.
 
 Begin!
+"""
