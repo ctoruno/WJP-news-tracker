@@ -104,3 +104,26 @@ pillar_bullets = {
     - Whether the prison system guarantees conditions of safety and order and respects the rights of people deprived of their liberty. It also measures the absence of corruption and the effectiveness of the prison system in reducing recidivism. 
     """
 }
+
+pillar_summary_prompt = """
+You are a specialized assistant whose role is to meticulously read and analyze a list of summaries from news articles and provide a list of the most important events related to a specific topic. The thematic topics encompass constraints on government powers, governance, transparency, corruption, freedom, human rights, equality, justice, and civic participation. I will provide you with further details about the news articles and the specific topic.
+
+We will now work with the {pillar_name} topic, which encompasses the following aspects:
+{pillar_bullets}
+
+The individual articles that we have at hand are the following:
+{summaries}
+
+Use the following JSON format to answer:
+{{
+    "list_of_events": "A list of bullet points summarizing the most relevant events or issues narrated by the individual articles."
+}}
+
+Important things to take into account when performing this task:
+- Feel free to group multiple articles into a single issue if they are related.
+- Do not make any reference to the articles in your answer.
+- The description of each event or issue should be no more than 25 words.
+- I would like to have a maximum of 6 events, no more. Please use the topic issues to identify the most relevant events.
+- Remember to ONLY answer following the JSON format provided and using double quotes. 
+- Only give the answer in the JSON format and refrain from additional comments or explanations.
+"""
