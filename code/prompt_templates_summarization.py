@@ -123,7 +123,7 @@ Important things to take into account when performing this task:
 - Feel free to group multiple articles into a single issue if they are related.
 - Do not make any reference to the articles in your answer.
 - The description of each event or issue should be no more than 25 words.
-- I would like to have a maximum of 6 events, no more. Please use the topic issues to identify the most relevant events.
+- I would like to have a maximum of FIVE events and/or issues listed, no more. Please use the topic issues provided above to identify the most relevant events.
 - Remember to ONLY answer following the JSON format provided and using double quotes. 
 - Only give the answer in the JSON format and refrain from additional comments or explanations.
 """
