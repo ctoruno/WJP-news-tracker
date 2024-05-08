@@ -48,5 +48,14 @@ The `3_EU_news_summarization.ipynb` contains the code used to evaluate individua
 
 Finally, the routines associated to the classification and evaluation phases will require the user to load the respective API keys through a `.env` file. This file, for obvious reasons, is not being tracked in this repo.
 
+# Requirements
+This code requires the installation of the following libraries:
+```
+langchain==0.1.0
+langchain-google-genai==0.0.9
+langchain-openai==0.0.5
+google-generativeai==0.3.2
+```
+
 ## Contact
 For inqueries please contact Carlos Toruño (ctoruno@worldjusticeproject.org).
