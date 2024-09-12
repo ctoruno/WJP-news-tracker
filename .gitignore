@@ -3,3 +3,5 @@ data/**/*.parquet.gzip
 data/eu-news-batch.pkl
 data/data-extraction-0/eu-news-batch.pkl
 .DS_Store
+
+/.quarto/
